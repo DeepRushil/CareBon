@@ -1,17 +1,17 @@
-# CareBon — your personal carbon ledger
+# CareBon : your personal carbon ledger
 
 A lightweight web app that helps individuals **understand, track, and reduce** their
 carbon footprint. You enter how you travel, power your home, and eat; CareBon converts
 that into tonnes of CO₂e per year, compares it against a climate-safe budget, and gives
 you a ranked list of the highest-impact changes *you* specifically can make.
 
-**Live demo:** _add your deployed URL here_
+**Live demo:** _https://carebon.vercel.app/_
 
 ---
 
 ## Why this design
 
-The platform is a **dependency-free static web app** — plain HTML, CSS, and ES modules.
+The platform is a **dependency-free static web app**  plain HTML, CSS, and ES modules.
 No framework, no build step, no backend, no third-party scripts. That choice maps
 directly onto the grading parameters:
 
@@ -71,27 +71,7 @@ npm test         # run the 29 unit tests
 
 It's static, so any static host works. Pick one:
 
-**Netlify (drag & drop) — fastest**
-1. Go to <https://app.netlify.com/drop>
-2. Drag the project folder in. Done — you get a live URL.
-   (`netlify.toml` and `_headers` apply the security headers automatically.)
-
-**Netlify CLI**
-```bash
-npm i -g netlify-cli
-netlify deploy --prod --dir .
-```
-
-**Vercel**
-```bash
-npm i -g vercel
-vercel --prod
-```
-(`vercel.json` carries the headers.)
-
-**GitHub Pages**
-Push to GitHub, then Settings → Pages → deploy from `main` / root. (Pages won't apply the
-custom headers, but the app runs fine.)
+Developed by Deep Rushil for PromptWars
 
 ## License
 
