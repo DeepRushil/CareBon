@@ -65,9 +65,9 @@ npm run dev      # serves at http://localhost:5173
 npm test         # run the 29 unit tests
 ```
 
-> The app itself needs no install — you can open `index.html` through any static server.
+> The app itself needs no install : you can open `index.html` through any static server.
 
-## Deploy
+
 
 It's static, so any static host works. Pick one:
 
