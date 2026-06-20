@@ -1,0 +1,17 @@
+{
+  "name": "carebon",
+  "version": "1.0.0",
+  "description": "A personal carbon footprint awareness platform. Estimate, understand and reduce your yearly emissions. Static, dependency-free, privacy-first.",
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes serve . -l 5173",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": ["carbon-footprint", "climate", "sustainability", "calculator"],
+  "license": "MIT",
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}
