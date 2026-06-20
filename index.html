@@ -26,9 +26,9 @@
     </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="#calculator" data-scroll>Calculate</a>
-      <a href="#results" data-scroll class="nav-locked">Breakdown</a>
-      <a href="#insights" data-scroll class="nav-locked">Actions</a>
-      <a href="#track" data-scroll class="nav-locked">Track</a>
+      <a href="#results" data-scroll class="nav-locked" aria-disabled="true" tabindex="-1">Breakdown</a>
+      <a href="#insights" data-scroll class="nav-locked" aria-disabled="true" tabindex="-1">Actions</a>
+      <a href="#track" data-scroll class="nav-locked" aria-disabled="true" tabindex="-1">Track</a>
     </nav>
   </header>
 
@@ -43,8 +43,8 @@
         <p class="reassure">No account, no tracking. Everything stays in your browser.</p>
       </div>
 
-      <figure class="gauge-card" aria-labelledby="readout-label">
-        <p class="gauge-welcome-title">Annual CO₂e footprint per person</p>
+      <figure class="gauge-card" aria-labelledby="gauge-title">
+        <p id="gauge-title" class="gauge-welcome-title">Annual CO₂e footprint per person</p>
         
         <!-- The unified comparison bars container -->
         <div id="gauge" class="benchmark-list">
@@ -229,7 +229,7 @@
         </div>
       </div>
 
-      <ol id="insights" class="insight-list"></ol>
+      <ol id="insights-list" class="insight-list"></ol>
     </section>
 
     <!-- TRACK -->

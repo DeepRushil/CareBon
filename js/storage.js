@@ -9,17 +9,22 @@
 const KEY = 'carebon.history.v1';
 const MAX_ENTRIES = 60;
 
+let fallbackStore = null;
+
 /** @returns {Storage|object} a Web Storage-like object, or a no-op fallback. */
 function defaultStore() {
   try {
-    if (typeof localStorage !== 'undefined') return localStorage;
+    if (typeof localStorage !== 'undefined' && localStorage) return localStorage;
   } catch { /* access can throw in private mode */ }
-  const mem = new Map();
-  return {
-    getItem: (k) => (mem.has(k) ? mem.get(k) : null),
-    setItem: (k, v) => mem.set(k, String(v)),
-    removeItem: (k) => mem.delete(k),
-  };
+  if (!fallbackStore) {
+    const mem = new Map();
+    fallbackStore = {
+      getItem: (k) => (mem.has(k) ? mem.get(k) : null),
+      setItem: (k, v) => mem.set(k, String(v)),
+      removeItem: (k) => mem.delete(k),
+    };
+  }
+  return fallbackStore;
 }
 
 /** Validate one snapshot record loaded from storage. */

@@ -59,4 +59,58 @@ describe('storage', () => {
     saveSnapshot({ total: 'bad', breakdown: {} }, store);
     expect(loadHistory(store)[0].total).toBe(0);
   });
+
+  it('falls back to defaultStore when no store argument is provided', () => {
+    expect(loadHistory()).toEqual([]);
+  });
+
+  it('defaultStore fallback works correctly when localStorage throws or is undefined', () => {
+    const origLocalStorage = globalThis.localStorage;
+    
+    // Test case 1: localStorage throws error on access (like in private browsing mode)
+    Object.defineProperty(globalThis, 'localStorage', {
+      configurable: true,
+      get() { throw new Error('SecurityError: Access denied'); }
+    });
+    
+    expect(loadHistory()).toEqual([]);
+    saveSnapshot({ total: 1000, breakdown: {} });
+    expect(loadHistory()).toHaveLength(1);
+    clearHistory();
+    expect(loadHistory()).toEqual([]);
+
+    // Test case 2: localStorage is undefined
+    Object.defineProperty(globalThis, 'localStorage', {
+      configurable: true,
+      value: undefined
+    });
+    
+    expect(loadHistory()).toEqual([]);
+    saveSnapshot({ total: 2000, breakdown: {} });
+    expect(loadHistory()[0].total).toBe(2000);
+    clearHistory();
+
+    // Test case 3: localStorage is defined and works
+    const mockStorage = memoryStore();
+    Object.defineProperty(globalThis, 'localStorage', {
+      configurable: true,
+      value: mockStorage
+    });
+    
+    expect(loadHistory()).toEqual([]);
+    saveSnapshot({ total: 3000, breakdown: {} });
+    expect(mockStorage.getItem('carebon.history.v1')).toBeDefined();
+    expect(loadHistory()[0].total).toBe(3000);
+    clearHistory();
+    
+    // Restore
+    if (origLocalStorage === undefined) {
+      delete globalThis.localStorage;
+    } else {
+      Object.defineProperty(globalThis, 'localStorage', {
+        configurable: true,
+        value: origLocalStorage
+      });
+    }
+  });
 });

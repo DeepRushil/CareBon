@@ -8,7 +8,7 @@ import { calcBreakdown, toTonnes } from './calculator.js';
 import { generateInsights } from './insights.js';
 import { loadHistory, saveSnapshot, clearHistory } from './storage.js';
 import { renderGauge } from './gauge.js';
-import { renderBreakdownBars, renderTrend, CATEGORY_META } from './charts.js';
+import { renderBreakdownBars, renderTrend } from './charts.js';
 import { formatKg, formatTonnes, formatDate } from './format.js';
 import { BENCHMARK_TONNES } from './factors.js';
 
@@ -22,7 +22,7 @@ const els = {
   verdict: $('#verdict'),
   breakdown: $('#breakdown'),
   comparison: $('#comparison'),
-  insights: $('#insights'),
+  insights: $('#insights-list'),
   trend: $('#trend'),
   trackEmpty: $('#track-empty'),
   saveBtn: $('#save-btn'),
@@ -165,7 +165,11 @@ function unlockResults(shouldScroll = true) {
   lockedSections.forEach((s) => s.classList.remove('section-locked'));
 
   const lockedNavs = document.querySelectorAll('.nav-locked');
-  lockedNavs.forEach((n) => n.classList.remove('nav-locked'));
+  lockedNavs.forEach((n) => {
+    n.classList.remove('nav-locked');
+    n.removeAttribute('aria-disabled');
+    n.removeAttribute('tabindex');
+  });
 
   if (shouldScroll) {
     const target = $('#results');
