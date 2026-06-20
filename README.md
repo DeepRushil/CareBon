@@ -1,78 +1,101 @@
-# CareBon : your personal carbon ledger
+# CareBon — Your Personal Carbon Ledger
 
-A lightweight web app that helps individuals **understand, track, and reduce** their
-carbon footprint. You enter how you travel, power your home, and eat; CareBon converts
-that into tonnes of CO₂e per year, compares it against a climate-safe budget, and gives
-you a ranked list of the highest-impact changes *you* specifically can make.
+CareBon is a lightweight, responsive, dependency-free static web application designed to help individuals **understand, track, and reduce** their personal carbon footprint. By entering everyday habits (travel, home energy consumption, diet, and goods purchasing), CareBon estimates your annual CO₂-equivalent (CO₂e) footprint, compares it against key international benchmarks and the climate-safe target, and ranks personalized actionable insights that will cut your emissions fastest.
 
-**Live demo:** _https://carebon.vercel.app/_
+**Live Demo:** [https://carebon.vercel.app/](https://carebon.vercel.app/)
 
 ---
 
-## Why this design
+## 🌟 Key Features
 
-The platform is a **dependency-free static web app**  plain HTML, CSS, and ES modules.
-No framework, no build step, no backend, no third-party scripts. That choice maps
-directly onto the grading parameters:
+1. **Understand (Hero Visualization & Category Breakdown)**:
+   - A unified, responsive, and beautifully sorted horizontal bar comparison chart displays your footprint alongside key benchmarks (Climate-Safe Target, India, World Average, EU, and the US).
+   - An interactive category breakdown chart presents exactly where your emissions come from (Travel, Home Energy, Food, and Stuff).
+2. **Reduce (Personalized, Ranked Insights)**:
+   - Dynamic recommendation algorithms analyze your exact habits to compute and rank the highest-saving changes you can make (e.g. switching to an EV, reducing short flights, moving down the diet ladder), filtering out actions with negligible impact.
+3. **Track (Browser History & Trend Line)**:
+   - Save your footprint snapshot locally to track progress over time. A hand-rolled SVG trend line shows your journey toward the climate-safe target.
 
-| Parameter | How it's met |
-|---|---|
-| **Code quality** | Calculation logic lives in small pure functions (`js/calculator.js`, `insights.js`) separate from the DOM. The UI layer never does arithmetic. |
-| **Security** | No backend and no user accounts means almost no attack surface. Strict CSP (`default-src 'none'`), `X-Frame-Options: DENY`, and friends are set in `netlify.toml` / `_headers` / `vercel.json`. Stored history is validated and corrupt data is discarded. |
-| **Efficiency** | Ships as static files; charts and the gauge are hand-rolled SVG, so there's zero JS library weight. Long-cache headers on `/css` and `/js`. |
-| **Testing** | 29 unit tests (Vitest) cover the calculator, the insight ranking, and storage validation. Run with `npm test`. CI runs them on every push. |
-| **Accessibility** | Semantic landmarks, a skip link, labelled form controls, `aria-live` on the live result readout, visible focus states, and `prefers-reduced-motion` support. |
-| **Problem-statement alignment** | The three pillars — *understand* (gauge + breakdown), *track* (saved snapshots + trend), *reduce* (personalized ranked actions) — are the three main sections of the page. |
+---
 
-## How it works
+## ⚡ Architecture & Grading Alignment
 
-1. **Understand** — A semicircular budget gauge shows your yearly footprint against the
-   2.3 t climate-safe target. A breakdown bar splits it into transport / home / food / stuff.
-2. **Reduce** — `generateInsights()` estimates the kg saved by each possible change *for your
-   inputs* (e.g. skipping a long-haul flight, switching to renewable electricity, moving down
-   the diet ladder), drops anything under 50 kg, and sorts the rest by impact.
-3. **Track** — You can save a snapshot to `localStorage` and watch the trend over time. Data
-   never leaves your browser.
+CareBon is built using standard **HTML5, Vanilla CSS, and ES Modules** without heavy frameworks or third-party tracking scripts, ensuring a secure and lightning-fast user experience.
 
-## Emission factors
+| Grading Parameter | How CareBon Exceeds the Standard |
+| :--- | :--- |
+| **Code Quality** | Business and calculation logic is isolated in pure, side-effect-free helper functions (`js/calculator.js`, `js/insights.js`, `js/gauge.js`, `js/charts.js`, and `js/format.js`). The DOM layer is kept clean and lightweight. |
+| **Security** | Static design eliminates server-side vulnerabilities. Security headers (Strict CSP, `X-Frame-Options: DENY`, `Referrer-Policy`) are strictly enforced via Netlify and Vercel configurations. Saved localStorage history is defensively parsed and validated. |
+| **Efficiency** | Dependency-free execution yields instant page loads. Hand-rolled inline SVGs render the charts and comparison bars without heavy external libraries. |
+| **Testing** | Covered by **58 comprehensive unit tests** in Vitest, verifying the calculator logic, insight sorting, formatting utils, rendering logic, and local storage fallback modes. |
+| **Accessibility (a11y)** | Keyboard navigable with a skip link, semantic HTML landmarks, persistent accessibility titles, custom focus styling, and explicit `tabindex` and `aria-disabled` state handling for locked navigation elements. |
+| **Problem Alignment** | A clear guided user flow (Calculate → Breakdown → Actions → Track) structured for impact and awareness. |
 
-Factors live in `js/factors.js` with sourced values from DEFRA (UK transport/energy
-conversion factors), the US EPA, the IEA (grid carbon intensity), and Our World in Data
-(per-capita benchmarks). They're approximations for awareness, not a certified audit.
+---
 
-## Project structure
+## 📂 Project Structure
 
 ```
-index.html          # markup + landmarks
-css/styles.css      # design tokens + responsive layout
+index.html          # Semantic markup, form fields, and page layout
+css/styles.css      # Design tokens, modern CSS grids/flexbox, animations, and dark/light contrast
 js/
-  factors.js        # emission factors + benchmarks (data)
-  calculator.js     # pure calculation functions
-  insights.js       # ranked reduction suggestions
-  storage.js        # localStorage wrapper (validated, injectable)
-  gauge.js          # SVG budget gauge
-  charts.js         # SVG breakdown + trend
-  format.js         # number/date formatting
-  app.js            # UI controller (the only DOM-aware module)
-tests/              # Vitest unit tests
+  factors.js        # Sourced emission factors and regional grid intensity data
+  calculator.js     # Pure calculation functions (transport, energy, food, stuff)
+  insights.js       # Actionable suggestion and savings calculation engine
+  storage.js        # localStorage wrapper with in-session fallback caching
+  gauge.js          # SVG comparative footprint bars
+  charts.js         # SVG category breakdown & historical trend charts
+  format.js         # Text, metric weight, and date formatting helpers
+  app.js            # Main UI controller (exclusively handles DOM interactions)
+tests/              # Comprehensive Vitest unit test files
 ```
 
-## Run locally
+---
 
-```bash
-npm install      # only needed for tests
-npm run dev      # serves at http://localhost:5173
-npm test         # run the 29 unit tests
-```
+## 🚀 Run Locally
 
-> The app itself needs no install : you can open `index.html` through any static server.
+Ensure you have [Node.js](https://nodejs.org/) installed, then follow these steps:
 
+1. **Clone the repository** and navigate to the project directory:
+   ```bash
+   git clone https://github.com/DeepRushil/CareBon.git
+   cd CareBon
+   ```
 
+2. **Install dependencies** (only required to run unit tests):
+   ```bash
+   npm install
+   ```
 
-It's static, so any static host works. Pick one:
+3. **Start the local development server**:
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:5173` in your browser.
 
-Developed by Deep Rushil for PromptWars
+4. **Execute the unit tests**:
+   ```bash
+   npm test
+   ```
 
-## License
+---
 
-MIT — see [LICENSE](LICENSE).
+## 🔬 Emission Factors & References
+
+Emission conversion factors are documented in [factors.js](file:///c:/Users/hp/Desktop/carebon/js/factors.js) and sourced from public databases:
+- **UK DEFRA** (GHG conversion factors for personal travel and transport modes)
+- **US EPA** (Energy consumption and household footprint metrics)
+- **IEA / Ember** (Regional electricity grid carbon intensity values)
+- **Our World in Data** (Dietary footprint research and global per-capita averages)
+
+---
+
+## 💻 Credits
+
+Developed by **Deep Rushil** for **PromptWars**
+
+---
+
+## 📄 License
+
+This project is open-source and licensed under the MIT License. See [LICENSE](LICENSE) for more details.
